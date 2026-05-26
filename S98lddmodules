@@ -1,0 +1,33 @@
+#!/bin/sh
+
+FAULTY_NAME="faulty"
+SCULL_NAME="scull"
+HELLO_NAME="hello"
+
+case "$1" in
+    start)
+        echo "Loading $SCULL_NAME..."
+        /usr/bin/scull_load "$SCULL_NAME"
+
+        echo "Loading $FAULTY_NAME..."
+        /usr/bin/module_load "$FAULTY_NAME"
+        
+        modprobe "$HELLO_NAME"
+        ;;
+
+    stop)
+        echo "Unloading $SCULL_NAME..."
+        /usr/bin/scull_unload "$SCULL_NAME"
+
+        echo "Unloading $FAULTY_NAME..."
+        /usr/bin/module_unload "$FAULTY_NAME"
+        
+        rmmod "$HELLO_NAME"
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop}"
+    exit 1
+esac
+
+exit 0
